@@ -8,5 +8,5 @@ extern pros::MotorGroup intake11W;
 extern pros::Motor lbArm;
 extern pros::Controller controller; //or pros::Controller master; or similar
 extern pros::Rotation lbRot;
-
+inline ez::Piston secRing('B', false);
 inline ez::Piston clampbru('A', false);

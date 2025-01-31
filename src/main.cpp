@@ -17,7 +17,7 @@ ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {-20, 17, -3},     // Left Chassis Ports (negative port will reverse it!)
     {18, -4, 5},  // Right Chassis Ports (negative port will reverse it!)
-    7,      // IMU Port
+    6,      // IMU Port
     3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     360);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
@@ -40,9 +40,17 @@ ez::Drive chassis(
 
 //
 const int numStates = 3;
-int states[numStates] = {0, -14250, -68250};
+int states[numStates] = {0, -14000, -68250};
 int currState = 0;
 int target = 0;
+
+void load() {
+  currState +=1;
+  if (currState != 1) {
+    currState = 1;
+  }
+  target = states[currState];
+}
 void nextState(){
   currState +=1;
   if (currState == 3) {
@@ -50,6 +58,7 @@ void nextState(){
   }
   target = states[currState];
 }
+
 void next2State(){
   currState +=2;
   if (currState >= 3) {
@@ -109,9 +118,11 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
     ez::as::auton_selector.autons_add({
-    Auton("lefts", lefts),
-    //Auton("rights", rights),
-    //Auton("skills", skills),
+    //Auton("left red", leftRed),
+    //Auton("right red", rightRed),
+    //Auton("left blue", leftBlue),
+    //Auton("right blue", rightBlue)
+    Auton("skills", test),
 
   });
 
@@ -308,12 +319,15 @@ void opcontrol() {
     //   setIntake(0);
     // }
 
+    
     //LB driver control
     // if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
-    //   nextState();
-    // }
+    //    nextState(); 
+    //  }
+    driverCon();
     intake11W.move((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
-    clampbru.button_toggle(master.get_digital(DIGITAL_L2  ));
+    clampbru.button_toggle(master.get_digital(DIGITAL_L2));
+    //secRing.button_toggle(master.get_digital(DIGITAL_L2));
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }

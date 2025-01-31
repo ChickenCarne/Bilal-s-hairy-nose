@@ -17,7 +17,7 @@ void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(3.0, 0.05, 30.0, 15.0);     // Turn in place constants 15
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
@@ -287,10 +287,14 @@ void test(){
 
 }
 */
-void lefts(){
-  nextState();
-  chassis.pid_drive_set(-28.5_in, 63, true);
-  pros::delay(1100);
+void leftRed(){
+  // next2State();
+  // pros::delay(2000);
+  // nextState();
+  // chassis.pid_drive_set(-5_in, 63, true);
+  // chassis.pid_turn_set(-30.9_deg, TURN_SPEED);
+  chassis.pid_drive_set(-31.75_in, 63, true);
+  pros::delay(1600);
   clampbru.set(true);
   pros::delay(310);
   setIntake(127);
@@ -299,37 +303,106 @@ void lefts(){
   setIntake(127);
   chassis.pid_drive_set(23_in, 100, true);
   pros::delay(2000);
-  setIntake(100);
-  chassis.pid_drive_set(23_in, 100, true);
+  setIntake(90);
+  chassis.pid_drive_set(24_in, 100, true);
   chassis.pid_turn_set(160_deg, TURN_SPEED);
   pros::delay(2000);
   setIntake(0);
 }
-void rights(){
-  chassis.pid_drive_set(-28.5_in, 63, true);
-  pros::delay(1100);
+void leftBlue(){
+
+}
+void rightRed(){
+  chassis.pid_drive_set(-31.75_in, 63, true);
+  pros::delay(1600);
   clampbru.set(true);
   pros::delay(310);
   setIntake(127);
   pros::delay(200);
-  chassis.pid_turn_set(270_deg, TURN_SPEED);
+  chassis.pid_turn_set(-100_deg, TURN_SPEED);
   setIntake(127);
   chassis.pid_drive_set(23_in, 100, true);
   pros::delay(2000);
-  setIntake(100);
-  chassis.pid_drive_set(23_in, 100, true);
+  setIntake(90);
+  chassis.pid_drive_set(24_in, 100, true);
   chassis.pid_turn_set(-160_deg, TURN_SPEED);
-  pros::delay(750);
+  pros::delay(2000);
   setIntake(0);
 }
-
-void skills(){
+void rightBlue(){
 
 }
-void winpoint(){   
-  
+void winpoint(){
+  next2State();
+  pros::delay(2000);
+  nextState();
+  chassis.pid_drive_set(-5_in, 66, true);
+  chassis.pid_turn_set(-75_deg, TURN_SPEED);
+  chassis.pid_drive_set(21.5_in, 68, true);
+  chassis.pid_drive_set(-25_in, 90, true);
+  chassis.pid_wait();
+  clampbru.set(true);
+  pros::delay(500);
+  setIntake(127);
+  chassis.pid_turn_set(98_deg, TURN_SPEED);
+  chassis.pid_drive_set(42_in, 70, true);
+  pros::delay(500);
+  chassis.pid_turn_set(110_deg, TURN_SPEED);
+}
+void skills(){   
+  next2State();
+  pros::delay(2000);
+  nextState();
+  chassis.pid_drive_set(-5_in, 66, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-75_deg, 100);
+  chassis.pid_wait();
+  chassis.pid_wait();
+  chassis.pid_drive_set(-25_in, 90, true);
+  chassis.pid_wait();
+  clampbru.set(true);
+  pros::delay(500);
+  setIntake(127);
+  chassis.pid_turn_set(98_deg, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_drive_set(42_in, 70, true);
+  chassis.pid_wait();
+  pros::delay(100);
+  chassis.pid_drive_set(5_in, 70, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(98_deg, TURN_SPEED);
 }
 
+void skillsPush(){
+  next2State();
+  pros::delay(2000);
+  nextState();
+  chassis.pid_wait();
+  chassis.pid_drive_set(-5_in, 66, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-75_deg, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-25_in, 90, true);
+  pros::delay(2000);
+  clampbru.set(true);
+  pros::delay(500);
+  chassis.pid_turn_set(90_deg, 100);
+  chassis.pid_wait();
+  pros::delay(500);
+  chassis.pid_turn_set(90_deg, 100);  
+  chassis.pid_wait();
+  pros::delay(500);
+  chassis.pid_turn_set(90_deg, 100);   
+  chassis.pid_wait();
+  chassis.pid_drive_set(-25_in, 90, true);
+}
+void test(){
+  chassis.pid_turn_set(90_deg, 100);  
+  chassis.pid_wait();
+  chassis.pid_turn_set(90_deg, 100);  
+  chassis.pid_turn_set(90_deg, 100);  
+  chassis.pid_turn_set(90_deg, 100);  
+}
 
 void odom_drive_example() {
   // This works the same as pid_drive_set, but it uses odom instead!

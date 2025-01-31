@@ -12,9 +12,12 @@ void default_constants();
 // void interfered_example();
 
 void test();
-void rights();
-void lefts();
+void rightBlue();
+void rightRed();
+void leftRed();
+void leftBlue();
 void skills();
+void skillsPush();
 void winpoint();
 
 void drive_48();
@@ -25,7 +28,9 @@ void turn_90();
 void turn_180();
 void turn_360();
 void turnBack();
-inline void nextState();
+void next2State();
+void nextState();
+
 
 void odom_drive_example();
 void odom_pure_pursuit_example();
