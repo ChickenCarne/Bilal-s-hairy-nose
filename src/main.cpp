@@ -38,9 +38,41 @@ ez::Drive chassis(
 
 //ez::PID liftPID(.5,.3,0,"functionality")
 
-//
+#include <iostream>
+
+
+
+void intakeDriver(){
+  int color = 0;
+// COLORSORT
+    // RED
+    // Senses for blue rings to eject
+  if (master.get_digital_new_press(DIGITAL_A)) {
+    if (color == 0 && (vision.get_hue() <= 230 && vision.get_hue() >= 200) &&
+        vision.get_proximity() <= 100) {
+      // for proximity => need to tune cuz idk what unit it returns
+      // if optical sensor is in a weird spot u might need a delay here
+      intakeHook.move_voltage(0); // stops intake
+      pros::delay(100);           // ensures the ring has time to fly
+    }
+    //  BLUE
+    // Senses for red rings to eject
+    else if (color == 1 && (vision.get_hue() <= 50 && vision.get_hue() >= 20) &&
+             vision.get_proximity() <= 100) {
+      // for proximity => need to tune cuz idk what unit it returns
+      // if optical sensor is in a weird spot u might need a delay here
+
+      intakeHook.move_voltage(0); // stops intake
+      pros::delay(100);           // ensures the ring has time to fly
+    } else {
+      intake11W.move((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127); // Normal intake control
+    }
+  } else {
+    intake11W.move((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
+  }
+}
 const int numStates = 3;
-int states[numStates] = {0, -14000, -68250};
+int states[numStates] = {0, -17200, -68250};
 int currState = 0;
 int target = 0;
 
@@ -118,11 +150,14 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
     ez::as::auton_selector.autons_add({
-    //Auton("left red", leftRed),
-    //Auton("right red", rightRed),
+    Auton("left two rings", left2),
+    //Auton("right two rings", right2),
+    //Auton("right red rush", rightRedRush),
     //Auton("left blue", leftBlue),
+    //Auton("left blue", leftBlue),
+    //Auton("left blue rush", leftBlueRush),
     //Auton("right blue", rightBlue)
-    Auton("skills", test),
+    //Auton("skills", skills),
 
   });
 
@@ -324,9 +359,11 @@ void opcontrol() {
     // if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
     //    nextState(); 
     //  }
+    intakeDriver();
     driverCon();
-    intake11W.move((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
+    
     clampbru.button_toggle(master.get_digital(DIGITAL_L2));
+    //intake11W.move((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
     //secRing.button_toggle(master.get_digital(DIGITAL_L2));
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }

@@ -12,13 +12,13 @@ void default_constants();
 // void interfered_example();
 
 void test();
+void left2();
+void right2();
+void skills();
 void rightBlue();
-void rightRed();
 void rightRedRush();
-void leftRed();
 void leftBlue();
 void leftBlueRush();
-void skills();
 void skillsPush();
 void winpoint();
 
